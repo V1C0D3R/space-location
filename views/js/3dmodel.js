@@ -15,10 +15,11 @@ var createSpaceScene = function() {
 	
 	var earth = BABYLON.Mesh.CreateSphere("earth", 16, 80, scene);
     var earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene);
-    /*earthMaterial.diffuseTexture = new BABYLON.Texture('views/images/earth.jpg', scene);
+    earthMaterial.diffuseTexture = new BABYLON.Texture('views/images/earth.jpg', scene);
     earthMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-    earthMaterial.emissiveColor = BABYLON.Color3.White();*/
-    
-    earthMaterial.material = earthMaterial;
+    earthMaterial.emissiveColor = BABYLON.Color3.White();
+
+    var sun = new BABYLON.PointLight("sun", new BABYLON.Vector3(50, 50, 30), scene);
+
 	return scene;
 };
