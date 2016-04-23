@@ -17,6 +17,7 @@ app.use(function(req, res, next) {
 var findInfoById = function (index, callback) {
   // Perform database query that calls callback when it's done
   // This is our SpaceLocation database
+  var SpaceLocation = {};
   if (!SpaceLocation[index])
     return callback(new Error(
       'No id matching '
@@ -33,7 +34,7 @@ app.get('/', function (req, res) {
 app.get('/:id', function (req, res) {
   var index = req.params.id;
   findInfoById(index, function(error, location) {
-    if (error) { return;}
+    if (error) { /* Get Error and display it */}
 
     //TODO: Fill index file with data object location
     res.sendFile(path.join(__dirname+'/views/index.html'));
