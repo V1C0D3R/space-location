@@ -29,7 +29,7 @@ var createSpaceScene = function() {
     godrays.mesh.material.diffuseTexture = new BABYLON.Texture('views/images/sun.png', scene, true, false, BABYLON.Texture.BILINEAR_SAMPLINGMODE);
     godrays.mesh.material.diffuseTexture.hasAlpha = true;
     godrays.mesh.position = new BABYLON.Vector3(-150, 150, 150);
-    godrays.mesh.scaling = new BABYLON.Vector3(350, 350, 350);
+    godrays.mesh.scaling = new BABYLON.Vector3(35, 35, 35);
 
     light.position = godrays.mesh.position;
 

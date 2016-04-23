@@ -2,9 +2,9 @@
 
 var express       = require('express');
 var path          = require('path');
+var dotenv        = require('dotenv').config();
 var config 	      = require(path.join(__dirname, 'config.js'));
 var dao           = require(path.join(__dirname, 'dao','dao.js'));
-// var globe = require('./helpers/globe.js');
 
 var app = express();
 app.use('/views',express.static(__dirname + '/views'));
