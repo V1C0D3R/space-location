@@ -1,0 +1,106 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #b60000;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+  color: #1f211e;
+}
+body {
+  text-align: center;
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 400px;
+}
+
+#logo{
+	max-height : 350px;
+}
+
+.table{
+	display: table;
+    margin : 0;
+    padding : 0;
+}
+
+.table-cell{
+    display: table-cell;
+    vertical-align: middle;
+    margin : 0;
+    padding : 0;
+}
+
+.part-top{
+	height : 20%;
+}
+
+.part-middle{
+	height : 15%;
+    width : 100%;
+}
+
+.slogan{
+	font-size: 2em;
+	font-family: Helvetica Neue;
+}
+
+.part-bottom{
+	/*font-size: 1.2em;*/
+	height: 50%;
+}
+
+#slider {
+  margin: 0 auto;
+  background-color:#000;
+  width: 40%;
+}
+
+/* volume bar */
+ .volume {
+    position:relative;
+    cursor:pointer;
+    width:100%;
+    height:20px;
+    float:left;
+    margin-top:10px;
+    margin-right:10px;
+    background-color:#fff;
+    border-color: black;
+}
+.volumeBar {
+    display:block;
+    height:20px;
+    position:absolute;
+    top:0;
+    left:0;
+    background-color:#2980b9;
+    z-index:10;
+    width: 90%;
+}

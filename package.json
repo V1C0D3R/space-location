@@ -1,0 +1,27 @@
+{
+  "name": "space-location",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "space",
+    "space-location",
+    "space-apps",
+    "apps"
+  ],
+  "author": "space-twitters",
+  "dependencies": {
+    "express": "4.13.3",
+    "request": "^2.65.0"
+  },
+  "engines": {
+    "node": "4.2.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/V1C0D3R/space-location.git"
+  }
+}
