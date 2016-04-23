@@ -2,8 +2,8 @@
 
 var express = require('express');
 var path    = require('path');
-var mysql   = require('mysql');
 var config 	= require(path.join(__dirname, 'config.js'));
+var dao     = require(path.join(__dirname, 'dao.js'));
 // var globe = require('./helpers/globe.js');
 
 var app = express();
@@ -19,8 +19,8 @@ app.use(function(req, res, next) {
 var findInfoById = function (index, callback) {
   // Perform database query that calls callback when it's done
   // This is our SpaceLocation database
-  var SpaceLocation = {};
-  if (!SpaceLocation[index])
+  var spaceLocation = dao.getSpaceLocationFromDB(index);
+  if (!spaceLocation)
     return callback(new Error(
       'No id matching '
        + index
@@ -42,8 +42,6 @@ app.get('/:id', function (req, res) {
     res.sendFile(path.join(__dirname+'/views/index.html'));
   });
 });
-
-//var connection = mysql.createConnection(config.dbinfo);
 
 var server = app.listen(config.port, function () {
   var host = server.address().address;
