@@ -1,12 +1,9 @@
-# make-the-search-a-better-place
-the new search engine
-```
-make-the-search-a-better-place is a search tools that merge subjects in results to get a better experience.                                              
-```
+# space-location
+Geo Tag in space
 
-This repository contains the source code for the search API.
+This repository contains the source code for the geo-tagging API and front-end to visualize a tag.
 
-The search api consists in the following main components:
+The API consists in the following main components:
 
  * Node modules to manage the rest api and to connect with externals modules.
  * A server exposing an API to interact with third-party services and returns sorted search results.
