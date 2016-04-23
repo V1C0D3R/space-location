@@ -1,4 +1,4 @@
-var createSpaceScene = function(canvas, engine) {
+var createSpaceScene = function() {
 	
 	scene = new BABYLON.Scene(engine);
 	
