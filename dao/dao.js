@@ -1,6 +1,7 @@
 var mysql   = require('mysql');
 var path    = require('path');
 var config 	= require(path.join(__dirname, '..', 'config.js'));
+var dateFormat = require('dateformat');
 
 var dao = {};
 
@@ -48,6 +49,42 @@ dao.getSpaceLocationFromDB = function getSpaceLocationFromDB (id, callback) {
 			};
 			console.log(spaceLocation);
 			return callback(spaceLocation);
+		});
+	});
+};
+
+dao.getPlanetLocation = function getPlanetLocation(date, callback) {
+		pool.getConnection(function(err, connection) {
+		if (err) {
+			if (connection) {
+				connection.release();
+			}
+			console.log("Error getting Planet " + err);
+		return callback(null);
+		}
+		
+		connection.query("SELECT * FROM Planet WHERE locationDate='"+ dateFormat(date, "yyyy-mm-dd") + "';", function(err, rows) {
+			connection.release();
+			if (err) {
+				console.log("Error after select query: " + err);
+				return callback(null);
+			};
+			if (rows.length != 8) {
+				console.log("Not enough planets found: " + rows.length);
+				return callback(null);
+			}
+			planets = {};
+			pLen = rows.length;
+			for (i = 0; i < pLen; i++) {
+				row = rows[i];
+				planets[row['name']] = {
+					latitude: row['latitude'],
+					longitude: row['longitude'],
+					distanceToSun: row['distanceToSun']
+				};
+			}
+			console.log(planets);
+			return callback(planets);
 		});
 	});
 };

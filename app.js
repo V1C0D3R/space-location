@@ -28,21 +28,44 @@ var findInfoById = function (index, callback) {
   
 };
 
+
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname+'/views/index.html'));
+  dao.getPlanetLocation(new Date(), function(planets) {
+      if (!planets) {
+        console.log("Planets not found");
+        return;
+      }
+      // TODO modify page with positions of planets
+      res.sendFile(path.join(__dirname+'/views/index.html'));
+    });
 });
 
 app.get('/:id', function (req, res) {
   var index = req.params.id;
   findInfoById(index, function(error, location) {
-    if (error) { /* Get Error and display it */}
-    
-    //TODO: Fill index file with data object location
-    // location  is accessible for information 
-    res.sendFile(path.join(__dirname+'/views/index.html'));
+    if (error) { 
+      console.log("Error retrieving space location. Displaying todays planet without space location.");
+      dao.getPlanetLocation(new Date(), function(planets) {
+      if (!planets) {
+        console.log("Planets not found");
+        return;
+      }
+      // TODO modify page with positions of planets
+      // TODO Saying problem retrieving location
+      res.sendFile(path.join(__dirname+'/views/index.html'));
+    });
+    } else {
+        dao.getPlanetLocation(location.date, function(planets) {
+        if (!planets) {
+          console.log("Planets not found");
+          return;
+        }
+        // TODO modify page with positions of planets
+        // TODO add pins in WebGL for tweet location
+        res.sendFile(path.join(__dirname+'/views/index.html'));
+      });
+    }
   });
-    
-  
 });
 
 var server = app.listen(config.port, function () {
