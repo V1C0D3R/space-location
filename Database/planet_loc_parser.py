@@ -21,7 +21,7 @@ def get_sql(planetname, line):
 	lat = float(splitted_line[3])
 	long = float(splitted_line[4])
 	
-	return "INSERT INTO planet_location (name, location_date, distance_to_sun, lat, long) VALUES ('{0}', '{1}', {2}, {3}, {4})".format(planetname, date.strftime("%Y-%m-%d"), dist_to_sun, lat, long)
+	return "INSERT INTO Planet (name, locationDate, distanceToSun, lat, long) VALUES ('{0}', '{1}', {2}, {3}, {4})".format(planetname, date.strftime("%Y-%m-%d"), dist_to_sun, lat, long)
 
 
 files = [f for f in listdir(".") if f.endswith('.lst')]

@@ -2,6 +2,7 @@
 
 var express = require('express');
 var path    = require('path');
+var mysql   = require('mysql');
 // var globe = require('./helpers/globe.js');
 
 var app = express();
@@ -41,8 +42,15 @@ app.get('/:id', function (req, res) {
   });
 });
 
+var connection = mysql.createConnection({ 
+	user: "space-user", 
+	password: "space-password",
+	database: "SpaceTweeters"
+});
+
 var server = app.listen(process.env.PORT || 3000, function () {
   var host = server.address().address;
   var port = server.address().port;
+
   console.log('Space Location app listening at http://%s:%s', host, port);
 });

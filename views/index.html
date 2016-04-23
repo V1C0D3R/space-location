@@ -15,10 +15,27 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://cdn.babylonjs.com/2-3/babylon.js"></script>
+    <script src="views/js/3dmodel.js"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        
+          canvas = document.getElementById('renderCanvas');
+          engine = new BABYLON.Engine(canvas, true);
+          var scene = createSpaceScene();
+          engine.runRenderLoop(function() {
+            scene.render();
+          });
+      });
+      
+      window.addEventListener('resize', function() {
+        engine.resize();
+      });
+    </script>
 
   </head>
   <body>
-    <div class="site-wrapper">      
+    <div class="site-wrapper">  
       <section class="part-top table">
           <div class="table-cell">
             <img class="img-responsive center-block" id="logo" src="views/images/logo.svg" alt="logo"/>
@@ -30,10 +47,7 @@
         </div>
       </section>
       <section class="part-bottom table">
-        <div class="container">
-          <p>The 3D Map here</p>
-          <div id="solarsystem"/>
-        </div>
+        <canvas id="renderCanvas" touch-action="none"></canvas>
       </section>
     </div>
   </body>
