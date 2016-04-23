@@ -34,5 +34,5 @@ Everything works around one branch (`master`) to follow the [Github Flow](https:
 
 ## More documentation
 
- * [API Endpoints](https://github.com/HexanomeBeurreOne/api.make-the-search-a-better-place/wiki/Endpoints)
- * [Frontend](https://github.com/HexanomeBeurreOne/search.make-the-search-a-better-place)
+ * [API Endpoints](https://github.com/V1C0D3R/space-location/blob/develop/wiki/Endpoints.md)
+ * [Frontend](https://github.com/V1C0D3R/space-location/tree/develop/views)
