@@ -5,8 +5,9 @@ This repository contains the source code for the geo-tagging API and front-end t
 
 The API consists in the following main components:
 
- * Node modules to manage the rest api and to connect with externals modules.
- * A server exposing an API to interact with third-party services and returns sorted search results.
+ * Post your location with the right coordinate system
+ * A server exposing an API to interact with third-party services
+ * A web page to display information about a tag
 
 ## Requirements
 
