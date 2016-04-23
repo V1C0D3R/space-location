@@ -14,24 +14,34 @@ app.use(function(req, res, next) {
   next();
 });
 
+var findInfoById = function (index, callback) {
+  // Perform database query that calls callback when it's done
+  // This is our SpaceLocation database
+  if (!SpaceLocation[index])
+    return callback(new Error(
+      'No id matching '
+       + index
+      )
+    );
+  return callback(null, SpaceLocation[index]);
+};
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname+'/views/index.html'));
 });
 
-app.get('/getSearchUrls', function (req, res) {
-	var searchQuery = req.query.q;
-  // default google results is set to 10
-	var num = req.query.num || 10;
+app.get('/:id', function (req, res) {
+  var index = req.params.id;
+  findInfoById(index, function(error, location) {
+    if (error) { return;}
 
-	gCrawler.getGoogleResult(searchQuery, num, function (error, links) {
-    // Return Objects array : {title:"", url:""}
-	  res.contentType('application/json');
-	  res.send(JSON.stringify(links));
-	});
+    //TODO: Fill index file with data object location
+    res.sendFile(path.join(__dirname+'/views/index.html'));
+  });
 });
 
 var server = app.listen(process.env.PORT || 3000, function () {
   var host = server.address().address;
   var port = server.address().port;
-  console.log('Expert System Search app listening at http://%s:%s', host, port);
+  console.log('Space Location app listening at http://%s:%s', host, port);
 });
