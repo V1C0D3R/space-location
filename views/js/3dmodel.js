@@ -19,7 +19,7 @@ var createSpaceScene = function() {
 
     // attach the camera to the canvas
     //camera.attachControl(canvas, false);
-	
+
 	var earth = BABYLON.Mesh.CreateSphere("earth", 16, 80, scene);
     earth.position = new BABYLON.Vector3(earthPos.x, earthPos.y, earthPos.z);
     var earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene);

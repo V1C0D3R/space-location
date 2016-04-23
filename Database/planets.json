@@ -1,0 +1,42 @@
+{
+  "mercury": {
+    "name": "Mercury",
+    "diameter": 4 900,
+    "texturePath": null
+  },
+  "venus": {
+    "name": "Venus",
+    "diameter": 12103.6,
+    "texturePath": null
+  },
+  "earth": {
+    "name": "Earth",
+    "diameter": 12713.6,
+    "texturePath": "views/images/earth.jpg"
+  },
+  "mars": {
+    "name": "Mars",
+    "diameter": 6779,
+    "texturePath": null
+  },
+  "jupiter": {
+    "name": "Jupiter",
+    "diameter": 139822,
+    "texturePath": null
+  },
+  "saturn": {
+    "name": "Saturn",
+    "diameter": 116464,
+    "texturePath": null
+  },
+  "uranus": {
+    "name": "Uranus",
+    "diameter": 50724,
+    "texturePath": null
+  },
+  "neptune": {
+    "name": "Neptune",
+    "diameter": 49244,
+    "texturePath": null
+  }
+}
