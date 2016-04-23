@@ -3,6 +3,7 @@
 var express = require('express');
 var path    = require('path');
 var mysql   = require('mysql');
+var config 	= require(path.join(__dirname + '/../config.js'));
 // var globe = require('./helpers/globe.js');
 
 var app = express();
@@ -42,13 +43,9 @@ app.get('/:id', function (req, res) {
   });
 });
 
-var connection = mysql.createConnection({ 
-	user: "space-user", 
-	password: "space-password",
-	database: "SpaceTweeters"
-});
+var connection = mysql.createConnection(config.dbinfo);
 
-var server = app.listen(process.env.PORT || 3000, function () {
+var server = app.listen(config.port, function () {
   var host = server.address().address;
   var port = server.address().port;
 
