@@ -7,16 +7,16 @@ CREATE TABLE Planet (
      name VARCHAR(100) NOT NULL,
 	 locationDate DATE NOT NULL,
 	 distanceToSun FLOAT NOT NULL,
-	 lat FLOAT NOT NULL,
-	 long FLOAT NOT NULL,
+	 latitude FLOAT NOT NULL,
+	 longitude FLOAT NOT NULL,
 	 
      PRIMARY KEY (id)
 );
 
 CREATE TABLE EarthPosition (
 	id INT NOT NULL AUTO_INCREMENT,
-	lat FLOAT NOT NULL,
-	long FLOAT NOT NULL,
+	latitude FLOAT NOT NULL,
+	longitude FLOAT NOT NULL,
 	altitude FLOAT NOT NULL,
 	PRIMARY KEY (id)
 );

@@ -21,13 +21,16 @@ def get_sql(planetname, line):
 	lat = float(splitted_line[3])
 	long = float(splitted_line[4])
 	
-	return "INSERT INTO Planet (name, locationDate, distanceToSun, lat, long) VALUES ('{0}', '{1}', {2}, {3}, {4})".format(planetname, date.strftime("%Y-%m-%d"), dist_to_sun, lat, long)
+	return "('{0}', '{1}', {2}, {3}, {4})".format(planetname, date.strftime("%Y-%m-%d"), dist_to_sun, lat, long)
 
 
 files = [f for f in listdir(".") if f.endswith('.lst')]
+print("INSERT INTO Planet (name, locationDate, distanceToSun, latitude, longitude) VALUES ");
 for file in files:
 	planetname = file[:-4]
-	for line in readFile(file)[1:]:
+	lines = readFile(file)[1:]
+	for line in lines:
 		sql = get_sql(planetname, line)
 		print(sql)
-
+		print(",")
+		
