@@ -13,6 +13,7 @@
   ],
   "author": "space-twitters",
   "dependencies": {
+    "cheerio": "^0.20.0",
     "dateformat": "^1.0.12",
     "dotenv": "^2.0.0",
     "express": "4.13.3",

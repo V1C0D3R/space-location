@@ -1,10 +1,13 @@
 "use strict";
 
-var express       = require('express');
-var path          = require('path');
-var dotenv        = require('dotenv').config();
-var config 	      = require(path.join(__dirname, 'config.js'));
-var dao           = require(path.join(__dirname, 'dao','dao.js'));
+var fs      = require('fs');
+var express = require('express');
+var path    = require('path');
+var dotenv  = require('dotenv').config();
+var config  = require(path.join(__dirname, 'config.js'));
+var dao     = require(path.join(__dirname, 'dao','dao.js'));
+var cheerio = require('cheerio');
+var planetsJson = require("views/json/planets.json");
 
 var app = express();
 app.use('/views',express.static(__dirname + '/views'));
@@ -28,6 +31,63 @@ var findInfoById = function (index, callback) {
   
 };
 
+var createAndSendAddPlanetScript = function(response, planets) {
+  var jsScript = "<script>var addParents = function(scene) {"
+  
+  planetsJson.forEach(function(planetJson) {
+    var planet = planetJson.name;
+    var planetLat = planets[planet].latitude; // de -90 à 90
+    var planetLong = planets[planet].longitude - 180; // de 0 à 360 -> -180 à 180
+    var planetDistance = planets[planet].distanceToSun * 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var planetXPos = planetDistance * Math.cos(planetLong) * Math.cos(planetLat);
+    var planetYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
+    var planetZPos = planetDistance * Math.sin(planetLat);
+    
+    jsScript += "var planet = BABYLON.Mesh.CreateSphere(" + planet + ", 16, " + planetJson.diameter + ", scene);";
+    jsScript += "planet.position = new BABYLON.Vector3(" + planetXPos + ", " + planetYPos + ", " + planetZPos + ");";
+    jsScript += "var planetMaterial = new BABYLON.StandardMaterial(" + planet + "Material, scene);";
+    jsScript += "planetMaterial.diffuseTexture = new BABYLON.Texture('" + planetJson.texturePath + "', scene);";
+    jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);";
+    jsScript += "planetMaterial.emissiveColor = BABYLON.Color3.White();";
+  });
+    
+  jsScript + "};";
+  
+  console.log(jsScript);  
+  var html = fs.readFileSync(__dirname + '/views/index.html');
+  var $ = cheerio.load(html);
+  var scriptNode = $('addPlanets');
+  scriptNode.replaceWith(jsScript);
+  response.send($.html());
+  
+  /*
+  for (var planet in planets) {
+          var planetVarName = planet + "Pos = {};";
+          
+  }
+  
+  jsScript += "$.getJSON(\"views/json/planets.json\", function(planetsJson) {";
+        jsScript += "planetsJson.forEach(function(planetJson) {";
+        jsScript += 
+        
+        jsScript += "planetMaterial.diffuseTexture = new BABYLON.Texture('views/images/earth.jpg', scene);";
+        jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);";
+        jsScript += "planetMaterial.emissiveColor = BABYLON.Color3.White();";
+            
+        jsScript += "});"
+  
+        
+          planetSizeJSVariables += "var " + planetVarName + ";";
+          planetSizeJSVariables += planetVarName + ".x = " + planetXPos + ";";
+          planetSizeJSVariables += planetVarName + ".y = " + planetYPos + ";";
+          planetSizeJSVariables += planetVarName + ".z = " + planetZPos + ";";
+        }
+        planetSizeJSVariables += "</script>";
+        console.log(planetSizeJSVariables);*/
+        
+
+};
+
 
 app.get('/', function (req, res) {
   dao.getPlanetLocation(new Date(), function(planets) {
@@ -35,8 +95,7 @@ app.get('/', function (req, res) {
         console.log("Planets not found");
         return;
       }
-      // TODO modify page with positions of planets
-      res.sendFile(path.join(__dirname+'/views/index.html'));
+      createAndSendAddPlanetScript(res, planets);
     });
 });
 
@@ -50,9 +109,8 @@ app.get('/:id', function (req, res) {
         console.log("Planets not found");
         return;
       }
-      // TODO modify page with positions of planets
+      createAndSendAddPlanetScript(res, planets);
       // TODO Saying problem retrieving location
-      res.sendFile(path.join(__dirname+'/views/index.html'));
     });
     } else {
         dao.getPlanetLocation(location.date, function(planets) {
@@ -60,9 +118,8 @@ app.get('/:id', function (req, res) {
           console.log("Planets not found");
           return;
         }
-        // TODO modify page with positions of planets
+        createAndSendAddPlanetScript(res, planets);
         // TODO add pins in WebGL for tweet location
-        res.sendFile(path.join(__dirname+'/views/index.html'));
       });
     }
   });

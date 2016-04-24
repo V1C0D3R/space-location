@@ -17,11 +17,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="http://cdn.babylonjs.com/2-3/babylon.js"></script>
     
+    <script id="addPlanets"></script>
     <script>
-      var earthPos = {};
-      earthPos.x = 500;
-      earthPos.y = 0;
-      earthPos.z = 200;
       var tweetPos = {}; // By default : sun
       tweetPos.x = 0;
       tweetPos.y = 0;
@@ -34,6 +31,7 @@
           canvas = document.getElementById('renderCanvas');
           engine = new BABYLON.Engine(canvas, true);
           var scene = createSpaceScene();
+          addPlanets(scene);
           engine.runRenderLoop(function() {
             scene.render();
           });
