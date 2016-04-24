@@ -39,6 +39,7 @@ var submitNewLocation = function (location, callback) {
     if (!id) {
       return callback(new Error('Failed to submit new location'), null);
     }
+    console.log("Call callback");
     return callback(null, id);
   });
   
@@ -255,35 +256,36 @@ app.post('/api/addnewlocation', function (req, res) {
   var newLocation = req.body;
   
   var index = null;
-  var url = "https://spacelocation.herokuapp.com/";
+  var url = "https://spacelocation.herokuapp.com/location/";
   submitNewLocation(newLocation, function(error, id) {
     if (error) { 
       console.log("Error submitting space location.");
       //TODO: return error to page : error
       error = "Error submitting space location.";
     } else {
+        console.log("index : " + id);
         index = id;
         url += id;
-    }
-  });
+        console.log("url : " + url);
 
+        res.format({
+          'text/plain': function(){
+            res.send('id is ' + 1 + '.');
+          },
 
-  res.format({
-    'text/plain': function(){
-      res.send('id is ' + 1 + '.');
-    },
+          'text/html': function(){
+            res.send('<p>id is ' + 1 + '</p>'); /// CHANGE WITH URL and <a>
+          },
 
-    'text/html': function(){
-      res.send('<p>id is ' + 1 + '</p>'); /// CHANGE WITH URL and <a>
-    },
+          'application/json': function(){
+            res.send({ id: 1, url: url }); //ENTER RIGHT ID
+          },
 
-    'application/json': function(){
-      res.send({ id: 1, url: url }); //ENTER RIGHT ID
-    },
-
-    'default': function() {
-      // log the request and respond with 406
-      res.status(406).send('Not Acceptable');
+          'default': function() {
+            // log the request and respond with 406
+            res.status(406).send('Not Acceptable');
+          }
+        });
     }
   });
 });
