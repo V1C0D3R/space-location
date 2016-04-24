@@ -19,12 +19,12 @@ var createSpaceScene = function() {
 
     // attach the camera to the canvas
     //camera.attachControl(canvas, false);
-	var earth = BABYLON.Mesh.CreateSphere("earth", 16, 80, scene);
+	/*var earth = BABYLON.Mesh.CreateSphere("earth", 16, 80, scene);
     earth.position = new BABYLON.Vector3(earthPos.x, earthPos.y, earthPos.z);
     var earthMaterial = new BABYLON.StandardMaterial("earthMaterial", scene);
     earthMaterial.diffuseTexture = new BABYLON.Texture('views/images/earth.jpg', scene);
     earthMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
-    earthMaterial.emissiveColor = BABYLON.Color3.White();
+    earthMaterial.emissiveColor = BABYLON.Color3.White();*/
 
     var godrays = new BABYLON.VolumetricLightScatteringPostProcess('godrays', 1.0, camera, null, 100, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);
 
