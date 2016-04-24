@@ -48,7 +48,7 @@ var cameraJS = function(x, y, z) {
     var jsScript = "";
     jsScript += "var alpha = 0;";
     jsScript += "var beta = 0;";
-    jsScript += "var altitude = 1000;";
+    jsScript += "var altitude = 300;";
     jsScript += "var cameraTarget = new BABYLON.Vector3(" + x + ", " + y + ", " + z + ");";
     jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
     jsScript += "camera.minX = -1000000;";
@@ -138,7 +138,7 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     console.log(pinsYPos);
     console.log(pinsZPos);
     
-    jsScript += "var pins = BABYLON.Mesh.CreateSphere('pins', 16, 5, scene);";
+    jsScript += "var pins = BABYLON.Mesh.CreateBox('pins', 5, scene);";
     jsScript += "pins.position = new BABYLON.Vector3(" + pinsXPos + ", " + pinsYPos + ", " + pinsZPos + ");";
     jsScript += "var pinsMaterial = new BABYLON.StandardMaterial('pinsMaterial', scene);";
     jsScript += "pinsMaterial.diffuseTexture = new BABYLON.Texture('../views/images/yellow.gif', scene);";
