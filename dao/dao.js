@@ -90,4 +90,50 @@ dao.getPlanetLocation = function getPlanetLocation(date, callback) {
 	});
 };
 
+dao.insertNewLocation = function insertNewLocation(newLocation, callback) {
+	// newLocationExample {"coordinateSystem":"ecliptic","planet":"earth","longitude":"88","latitude":"88","altitude":"88"}
+
+	// if (isNaN(newLocation.coordinateSystem) || isNaN(newLocation.planet) || isNaN(parseFloat(newLocation.longitude)) || isNaN(parseFloat(newLocation.latitude)) || isNaN(parseFloat(newLocation.altitude))) {
+	// 	console.log("Missing a parameter, should be like : {\"coordinateSystem\":\"ecliptic\",\"planet\":\"earth\",\"longitude\":\"88\",\"latitude\":\"88\",\"altitude\":\"88\"}");
+	// 	return callback(null);
+	// }
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			if (connection) {
+				connection.release();
+			}
+			console.log("Error setting new location: " + err);
+			return callback(null);
+		}
+		
+		var locationDate = dateFormat(new Date().getTime(), "yyyy-mm-dd hh:MM:ss");
+		newLocation.date = locationDate;
+		console.log("Location date : " + locationDate);
+
+		// connection.query("SELECT * FROM Planet WHERE locationDate='"+ dateFormat(date, "yyyy-mm-dd hh:MM:ss") + "';", function(err, rows) {
+		// 	connection.release();
+		// 	if (err) {
+		// 		console.log("Error after select query: " + err);
+		// 		return callback(null);
+		// 	};
+		// 	if (rows.length != 8) {
+		// 		console.log("Not enough planets found: " + rows.length);
+		// 		return callback(null);
+		// 	}
+		// 	planets = {};
+		// 	pLen = rows.length;
+		// 	for (i = 0; i < pLen; i++) {
+		// 		row = rows[i];
+		// 		planets[row['name']] = {
+		// 			latitude: row['latitude'],
+		// 			longitude: row['longitude'],
+		// 			distanceToSun: row['distanceToSun']
+		// 		};
+		// 	}
+		// 	console.log(planets);
+		// 	return callback(planets);
+		// });
+	});
+};
+
 module.exports = dao;

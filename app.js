@@ -9,6 +9,7 @@ var dao     = require(path.join(__dirname, 'dao','dao.js'));
 var cheerio = require('cheerio');
 var planetsJson = require(path.join(__dirname, "Database/planets.json"));
 
+var bodyParser = require('body-parser');
 var app = express();
 app.use('/views',express.static(__dirname + '/views'));
 
@@ -27,6 +28,18 @@ var findInfoById = function (index, callback) {
       return callback(new Error('No id matching '+ index), null);
     }
     return callback(null, location);
+  });
+  
+};
+
+var submitNewLocation = function (location, callback) {
+  // Perform database query that calls callback when it's done
+  // This is our SpaceLocation database
+  dao.insertNewLocation(location, function(id) {
+    if (!id) {
+      return callback(new Error('Failed to submit new location'), null);
+    }
+    return callback(null, id);
   });
   
 };
@@ -139,6 +152,57 @@ app.get('/location/:id', function (req, res) {
 
 app.get('/newlocation/', function (req, res) {
   res.sendFile(path.join(__dirname+'/views/newlocation.html'));
+});
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:true}));
+// parse application/json
+app.use(bodyParser.json());
+
+app.post('/api/addnewlocation', function (req, res) {
+  // var coordinateSystem = req.data.coordinateSystem;
+  // var planet = req.data.planet;
+  // var longitude = req.data.longitude;
+  // var latitude = req.data.latitude;
+  // var altitude = req.data.altitude;
+
+  console.log("Successfully received query !");
+  console.log(req.body);
+
+  var newLocation = req.body;
+  
+  var index = null;
+  var url = "https://spacelocation.herokuapp.com/";
+  submitNewLocation(newLocation, function(error, id) {
+    if (error) { 
+      console.log("Error submitting space location.");
+      //TODO: return error to page : error
+      error = "Error submitting space location.";
+    } else {
+        index = id;
+        url += id;
+    }
+  });
+
+
+  res.format({
+    'text/plain': function(){
+      res.send('id is ' + 1 + '.');
+    },
+
+    'text/html': function(){
+      res.send('<p>id is ' + 1 + '</p>'); /// CHANGE WITH URL and <a>
+    },
+
+    'application/json': function(){
+      res.send({ id: 1, url: url }); //ENTER RIGHT ID
+    },
+
+    'default': function() {
+      // log the request and respond with 406
+      res.status(406).send('Not Acceptable');
+    }
+  });
 });
 
 var server = app.listen(config.port, function () {
