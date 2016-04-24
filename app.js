@@ -3,6 +3,9 @@
 var express       = require('express');
 var path          = require('path');
 var dotenv        = require('dotenv').config();
+var http = require('http').Server(app);
+var io = require('socket.io')(app);
+var fs = require('fs');
 var config 	      = require(path.join(__dirname, 'config.js'));
 var dao           = require(path.join(__dirname, 'dao','dao.js'));
 
@@ -65,6 +68,16 @@ app.get('/:id', function (req, res) {
         res.sendFile(path.join(__dirname+'/views/index.html'));
       });
     }
+  });
+});
+
+io.on('connection', function (socket) {
+  socket.on('finishedRendering', function (scene) {
+    console.log(scene);
+    /// Find planets dimensions and positions before sending them back to client
+    var planets = require(path.join(__dirname, "Database/planets.json"));
+
+    socket.emit('newPlanets', planets);
   });
 });
 

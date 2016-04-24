@@ -16,6 +16,7 @@
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="http://cdn.babylonjs.com/2-3/babylon.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     
     <script>
       var earthPos = {};
@@ -34,6 +35,8 @@
           canvas = document.getElementById('renderCanvas');
           engine = new BABYLON.Engine(canvas, true);
           var scene = createSpaceScene();
+          var socket = io.connect('http://localhost');
+          socket.emit('finishedRendering', { scene: scene });
           engine.runRenderLoop(function() {
             scene.render();
           });
@@ -41,6 +44,24 @@
       
       window.addEventListener('resize', function() {
         engine.resize();
+      });
+    </script>
+
+    <script>
+      var socket = io();
+      socket.on('newPlanets', function (planets) {
+        console.log(planets);
+        //Add new planets in scene
+        //for each...
+        planets.forEach(function(planetToAdd) {
+            console.log("New planet" + planetToAdd.name);
+            var planet = BABYLON.Mesh.CreateSphere(planetToAdd.name, 16, planetToAdd.diameter, scene);
+            planet.position = new BABYLON.Vector3(planetToAdd.x, planetToAdd.y, planetToAdd.z);
+            var planetMaterial = new BABYLON.StandardMaterial(planetToAdd.name + "Material", scene);
+            planetMaterial.diffuseTexture = new BABYLON.Texture(planetToAdd.texturePath, scene);
+            planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+            planetMaterial.emissiveColor = BABYLON.Color3.White();
+        });
       });
     </script>
 
@@ -62,5 +83,4 @@
       </section>
     </div>
   </body>
-
 </html>
