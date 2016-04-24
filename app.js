@@ -60,6 +60,9 @@ var cameraJS = function(x, y, z) {
 
 var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
   console.log("CREATE PLANET SCRIPT");
+  var html = fs.readFileSync(__dirname + '/views/index.html');
+  var $ = cheerio.load(html);
+  
   var jsScript = "<script>function addPlanets(scene) {"
   //console.log(planetsJson);
 
@@ -98,20 +101,20 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
   if (spaceLocation) {
     var refPlanet = spaceLocation.ref;
     console.log("Ref planet: " + refPlanet);
-    var earthLat = planets[refPlanet].latitude; // de -90 à 90
-    var earthLong = planets[refPlanet].longitude - 180; // de 0 à 360 -> -180 à 180
-    var earthDistance = planets[refPlanet].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
-    var earthXPos = (earthDistance * Math.cos(earthLong) * Math.cos(earthLat));
-    var earthYPos = earthDistance * Math.sin(earthLong) * Math.cos(earthLat);
-    var earthZPos = earthDistance * Math.sin(earthLat);
+    var refLat = planets[refPlanet].latitude; // de -90 à 90
+    var refLong = planets[refPlanet].longitude - 180; // de 0 à 360 -> -180 à 180
+    var refDistance = planets[refPlanet].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var refXPos = (refDistance * Math.cos(refLong) * Math.cos(refLat));
+    var refYPos = refDistance * Math.sin(refLong) * Math.cos(refLat);
+    var refZPos = refDistance * Math.sin(refLat);
     
     console.log(spaceLocation);
     var pinsLat = spaceLocation.lat;
     var pinsLong = spaceLocation.long;
     var pinsDistance = spaceLocation.altitude / 100;
-    var pinsXPos = (pinsDistance * Math.cos(pinsLong) * Math.cos(pinsLat)) + earthXPos;
-    var pinsYPos = pinsDistance * Math.sin(pinsLong) * Math.cos(pinsLat) + earthYPos;
-    var pinsZPos = pinsDistance * Math.sin(pinsLat) + earthZPos;
+    var pinsXPos = (pinsDistance * Math.cos(pinsLong) * Math.cos(pinsLat)) + refXPos;
+    var pinsYPos = pinsDistance * Math.sin(pinsLong) * Math.cos(pinsLat) + refYPos;
+    var pinsZPos = pinsDistance * Math.sin(pinsLat) + refZPos;
     
     console.log(earthDistance);
     console.log(earthXPos);
@@ -132,15 +135,39 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     
     jsScript += cameraJS(pinsXPos, pinsYPos, pinsZPos);
     
+    /*var earthLat = planets['earth'].latitude;
+    var earthLong = planets['earth'].longitude - 180; // de 0 à 360 -> -180 à 180
+    var earthDistance = planets['earth'].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var earthXPos = (earthDistance * Math.cos(earthLong) * Math.cos(earthLat));
+    var earthYPos = earthDistance * Math.sin(earthLong) * Math.cos(earthLat);
+    var earthZPos = earthDistance * Math.sin(earthLat);
+    // ----
+    var marsLat = planets['mars'].latitude;
+    var marsLong = planets['mars'].longitude - 180; // de 0 à 360 -> -180 à 180
+    var marsDistance = planets['mars'].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var marsXPos = (marsDistance * Math.cos(marsLong) * Math.cos(marsLat));
+    var marsYPos = marsDistance * Math.sin(marsLong) * Math.cos(marsLat);
+    var marsZPos = marsDistance * Math.sin(marsLat);*/
+    // Sun = 0,0,0
+    var distSun = Math.sqrt(pinsXPos*pinsXPos + pinsYPos*pinsYPos + pinsZPos*pinsZPos) * 1000;
+    /*var distEarth = Math.sqrt((pinsXPos-earthXPos)*(pinsXPos-earthXPos) + (pinsYPos-earthYPos)*(pinsYPos-earthYPos) + (pinsZPos-earthZPos)*(pinsZPos-earthZPos));
+    var distMars = Math.sqrt((pinsXPos-marsXPos)*(pinsXPos-marsXPos) + (pinsYPos-marsYPos)*(pinsYPos-marsYPos) + (pinsZPos-marsZPos)*(pinsZPos-marsZPos));*/
+    var planetInfoHtml = "<p>Distance from sun: " + distSun + " km</br>";
+    /*planetInfoHtml += "Distance from earth: " + distEarth + " km</br>";
+    planetInfoHtml += "Distance from mars: " + distMars + " km</br>";*/
+    planetInfoHtml += "</p>";
+    var pNode = $('#planetInformation');
+    pNode.replaceWith(planetInfoHtml);
+    
   } else {
     console.log("no space loc");
     
     var earthLat = planets['earth'].latitude; // de -90 à 90
     var earthLong = planets['earth'].longitude - 180; // de 0 à 360 -> -180 à 180
     var earthDistance = planets['earth'].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
-    var earthXPos = (planetDistance * Math.cos(planetLong) * Math.cos(planetLat));
-    var earthYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
-    var earthZPos = planetDistance * Math.sin(planetLat);
+    var earthXPos = (earthDistance * Math.cos(earthLong) * Math.cos(earthLat));
+    var earthYPos = earthDistance * Math.sin(earthLong) * Math.cos(earthLat);
+    var earthZPos = earthDistance * Math.sin(earthLat);
     
     jsScript += cameraJS(earthXPos, earthYPos, earthZPos);
   }
@@ -148,8 +175,6 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
   jsScript += "};</script>";
   //console.log(jsScript);
   
-  var html = fs.readFileSync(__dirname + '/views/index.html');
-  var $ = cheerio.load(html);
   var scriptNode = $('#addPlanets');
   scriptNode.replaceWith(jsScript);
   response.send($.html());
@@ -190,7 +215,6 @@ app.get('/location/:id', function (req, res) {
         }
         console.log(location);
         createAndSendAddPlanetScript(res, planets, location);
-        // TODO add pins in WebGL for tweet location
       });
     }
   });
