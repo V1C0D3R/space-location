@@ -31,6 +31,30 @@ var findInfoById = function (index, callback) {
   
 };
 
+var cameraJS = function(x, y, z) {
+    var jsScript = "";
+    jsScript += "var alpha = 0;";
+    jsScript += "var beta = 0;";
+    jsScript += "var altitude = 1000;";
+    jsScript += "var cameraTarget = new BABYLON.Vector3(" + x + ", " + y + ", " + z + ");";
+    jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
+    jsScript += "camera.maxX = 1000000;";
+    jsScript += "camera.maxY = 1000000;";
+    jsScript += "camera.maxZ = 1000000;";
+    jsScript += "camera.attachControl(canvas, false);";
+
+    jsScript += "var light = new BABYLON.PointLight(\"Omni\", new BABYLON.Vector3(0, 0, 0), scene);";
+    jsScript += "var godrays = new BABYLON.VolumetricLightScatteringPostProcess('godrays', 1.0, camera, null, 100, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);";
+
+    jsScript += "godrays.mesh.material.diffuseTexture = new BABYLON.Texture('../views/images/sun.png', scene, true, false, BABYLON.Texture.BILINEAR_SAMPLINGMODE);";
+    jsScript += "godrays.mesh.material.diffuseTexture.hasAlpha = true;";
+    jsScript += "godrays.mesh.position = new BABYLON.Vector3(0, 0, 0);";
+    jsScript += "godrays.mesh.scaling = new BABYLON.Vector3(695.7, 695.7, 695.7);";
+
+    jsScript += "light.position = godrays.mesh.position;";
+    return jsScript;
+}
+
 var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
   console.log("CREATE PLANET SCRIPT");
   var jsScript = "<script>function addPlanets(scene) {"
@@ -73,7 +97,7 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     console.log(spaceLocation);
     var pinsLat = spaceLocation.lat;
     var pinsLong = spaceLocation.long;
-    var pinsDistance = spaceLocation.altitude;
+    var pinsDistance = spaceLocation.altitude / 100;
     var pinsXPos = (pinsDistance * Math.cos(pinsLong) * Math.cos(pinsLat)) + earthXPos;
     var pinsYPos = pinsDistance * Math.sin(pinsLong) * Math.cos(pinsLat) + earthYPos;
     var pinsZPos = pinsDistance * Math.sin(pinsLat) + earthZPos;
@@ -87,7 +111,7 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     console.log(pinsYPos);
     console.log(pinsZPos);
     
-    jsScript += "var pins = BABYLON.Mesh.CreateSphere('pins', 16, 50, scene);";
+    jsScript += "var pins = BABYLON.Mesh.CreateSphere('pins', 16, 15, scene);";
     jsScript += "pins.position = new BABYLON.Vector3(" + pinsXPos + ", " + pinsYPos + ", " + pinsZPos + ");";
     jsScript += "var pinsMaterial = new BABYLON.StandardMaterial('pinsMaterial', scene);";
     jsScript += "pinsMaterial.diffuseTexture = new BABYLON.Texture('../views/images/red.png', scene);";
@@ -95,23 +119,7 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     jsScript += "pinsMaterial.emissiveColor = BABYLON.Color3.White();";
     jsScript += "pins.material = pinsMaterial;";
     
-    
-    jsScript += "var alpha = 0;";
-    jsScript += "var beta = 0;";
-    jsScript += "var altitude = 1000;";
-    jsScript += "var cameraTarget = new BABYLON.Vector3(" + pinsXPos + ", " + pinsYPos + ", " + pinsZPos + ");";
-    jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
-    jsScript += "camera.attachControl(canvas, false);";
-
-    jsScript += "var light = new BABYLON.PointLight(\"Omni\", new BABYLON.Vector3(0, 0, 0), scene);";
-    jsScript += "var godrays = new BABYLON.VolumetricLightScatteringPostProcess('godrays', 1.0, camera, null, 100, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);";
-
-    jsScript += "godrays.mesh.material.diffuseTexture = new BABYLON.Texture('../views/images/sun.png', scene, true, false, BABYLON.Texture.BILINEAR_SAMPLINGMODE);";
-    jsScript += "godrays.mesh.material.diffuseTexture.hasAlpha = true;";
-    jsScript += "godrays.mesh.position = new BABYLON.Vector3(0, 0, 0);";
-    jsScript += "godrays.mesh.scaling = new BABYLON.Vector3(695.7, 695.7, 695.7);";
-
-    jsScript += "light.position = godrays.mesh.position;";
+    jsScript += cameraJS(pinsXPos, pinsYPos, pinsZPos);
     
   } else {
     console.log("no space loc");
@@ -122,22 +130,8 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     var earthXPos = (planetDistance * Math.cos(planetLong) * Math.cos(planetLat));
     var earthYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
     var earthZPos = planetDistance * Math.sin(planetLat);
-    jsScript += "var alpha = 0;";
-    jsScript += "var beta = 0;";
-    jsScript += "var altitude = 1000;";
-    jsScript += "var cameraTarget = new BABYLON.Vector3(" + earthXPos + ", " + earthYPos + ", " + earthZPos + ");";
-    jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
-    jsScript += "camera.attachControl(canvas, false);";
-
-    jsScript += "var light = new BABYLON.PointLight(\"Omni\", new BABYLON.Vector3(0, 0, 0), scene);";
-    jsScript += "var godrays = new BABYLON.VolumetricLightScatteringPostProcess('godrays', 1.0, camera, null, 100, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);";
-
-    jsScript += "godrays.mesh.material.diffuseTexture = new BABYLON.Texture('../views/images/sun.png', scene, true, false, BABYLON.Texture.BILINEAR_SAMPLINGMODE);";
-    jsScript += "godrays.mesh.material.diffuseTexture.hasAlpha = true;";
-    jsScript += "godrays.mesh.position = new BABYLON.Vector3(0, 0, 0);";
-    jsScript += "godrays.mesh.scaling = new BABYLON.Vector3(695.7, 695.7, 695.7);";
-
-    jsScript += "light.position = godrays.mesh.position;";
+    
+    jsScript += cameraJS(earthXPos, earthYPos, earthZPos);
   }
 
   jsScript += "};</script>";

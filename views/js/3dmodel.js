@@ -1,7 +1,16 @@
 var createSpaceScene = function() {
 	
 	scene = new BABYLON.Scene(engine);
-	
+	scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    
+    /* DOES NOT WORK :D
+    var spaceMaterial = new BABYLON.StandardMaterial("groundmat", scene);
+    spaceMaterial.emissiveTexture = new BABYLON.Texture("../views/images/space.gif", scene);
+    spaceMaterial.emissiveTexture.uScale = 1; //you could try changin this and below value to see replicated image 
+    spaceMaterial.emissiveTexture.vScale = 1;
+    spaceMaterial.emissiveTexture.level = 1; //It is kind of z-index
+    scene.material = spaceMaterial;*/
+    
     //Adding a light
     // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);
 
