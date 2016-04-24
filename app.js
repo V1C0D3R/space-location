@@ -34,6 +34,7 @@ var findInfoById = function (index, callback) {
 var createAndSendAddPlanetScript = function(response, planets) {
   var jsScript = "<script>function addPlanets(scene) {"
   console.log(planetsJson);
+
   for (var planet in planetsJson) {
     var planetLat = planets[planet].latitude; // de -90 à 90
     var planetLong = planets[planet].longitude - 180; // de 0 à 360 -> -180 à 180
@@ -57,7 +58,30 @@ var createAndSendAddPlanetScript = function(response, planets) {
     jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);";
     jsScript += "planetMaterial.emissiveColor = BABYLON.Color3.White();";
   };
-    
+
+  var planetLat = planets["mars"].latitude; // de -90 à 90
+  var planetLong = planets["mars"].longitude - 180; // de 0 à 360 -> -180 à 180
+  var planetDistance = planets["mars"].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+  var planetXPos = (planetDistance * Math.cos(planetLong) * Math.cos(planetLat));
+  var planetYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
+  var planetZPos = planetDistance * Math.sin(planetLat);
+  jsScript += "var alpha = 0;";
+  jsScript += "var beta = 0;";
+  jsScript += "var altitude = 1500;";
+  jsScript += "var cameraTarget = new BABYLON.Vector3(" + planetXPos + ", " + planetYPos + ", " + planetZPos + ");";
+  jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
+  jsScript += "camera.attachControl(canvas, false);";
+
+  jsScript += "var light = new BABYLON.PointLight(\"Omni\", new BABYLON.Vector3(0, 0, 0), scene);";
+  jsScript += "var godrays = new BABYLON.VolumetricLightScatteringPostProcess('godrays', 1.0, camera, null, 100, BABYLON.Texture.BILINEAR_SAMPLINGMODE, engine, false);";
+
+  jsScript += "godrays.mesh.material.diffuseTexture = new BABYLON.Texture('views/images/sun.png', scene, true, false, BABYLON.Texture.BILINEAR_SAMPLINGMODE);";
+  jsScript += "godrays.mesh.material.diffuseTexture.hasAlpha = true;";
+  jsScript += "godrays.mesh.position = new BABYLON.Vector3(0, 0, 0);";
+  jsScript += "godrays.mesh.scaling = new BABYLON.Vector3(695.7, 695.7, 695.7);";
+
+  jsScript += "light.position = godrays.mesh.position;";
+
   jsScript += "};</script>";
   
   var html = fs.readFileSync(__dirname + '/views/index.html');
