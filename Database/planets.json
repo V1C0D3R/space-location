@@ -12,7 +12,7 @@
   "earth": {
     "name": "Earth",
     "diameter": 12713.6,
-    "texturePath": "views/images/earth.jpg"
+    "texturePath": "../views/images/earth.jpg"
   },
   "mars": {
     "name": "Mars",
