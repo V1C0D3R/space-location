@@ -129,7 +129,7 @@ app.get('/', function (req, res) {
     });
 });
 
-app.get('/:id', function (req, res) {
+app.get('/location/:id', function (req, res) {
   var index = req.params.id;
   findInfoById(index, function(error, location) {
     if (error) { 
