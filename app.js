@@ -37,14 +37,21 @@ var createAndSendAddPlanetScript = function(response, planets) {
   for (var planet in planetsJson) {
     var planetLat = planets[planet].latitude; // de -90 à 90
     var planetLong = planets[planet].longitude - 180; // de 0 à 360 -> -180 à 180
-    var planetDistance = planets[planet].distanceToSun * 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var planetDistance = planets[planet].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
     var planetXPos = (planetDistance * Math.cos(planetLong) * Math.cos(planetLat));
     var planetYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
     var planetZPos = planetDistance * Math.sin(planetLat);
+    console.log(planet);
+    console.log("Lat: " + planetLat);
+    console.log("Long: " + planetLong);
+    console.log("Dist: " + planetDistance);
+    console.log("Position x: " + planetXPos);
+    console.log("Position y: " + planetYPos);
+    console.log("Position z: " + planetZPos);
+        
     
     jsScript += "var planet" + planet + " = BABYLON.Mesh.CreateSphere('" + planet + "', 16, " + (planetsJson[planet].diameter / 1000) + ", scene);";
-    //jsScript += "planet" + planet + ".position = new BABYLON.Vector3(" + planetXPos + ", " + planetYPos + ", " + planetZPos + ");";
-    jsScript += "planet" + planet + ".position = new BABYLON.Vector3(1000, 0, 1000);";
+    jsScript += "planet" + planet + ".position = new BABYLON.Vector3(" + planetXPos + ", " + planetYPos + ", " + planetZPos + ");";
     jsScript += "var planetMaterial = new BABYLON.StandardMaterial('" + planet + "Material', scene);";
     jsScript += "planetMaterial.diffuseTexture = new BABYLON.Texture('" + planetsJson[planet].texturePath + "', scene);";
     jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);";
@@ -53,12 +60,10 @@ var createAndSendAddPlanetScript = function(response, planets) {
     
   jsScript += "};</script>";
   
-  console.log(jsScript);  
   var html = fs.readFileSync(__dirname + '/views/index.html');
   var $ = cheerio.load(html);
   var scriptNode = $('#addPlanets');
   scriptNode.replaceWith(jsScript);
-  console.log($.html())
   response.send($.html());
   
   /*

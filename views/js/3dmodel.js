@@ -10,7 +10,7 @@ var createSpaceScene = function() {
     // radius = altitude/height
     var alpha = 0;
     var beta = 0;
-    var altitude = 1000;
+    var altitude = 1500;
     var cameraTarget = new BABYLON.Vector3(tweetPos.x, tweetPos.y, tweetPos.z);
 	camera = new BABYLON.ArcRotateCamera("Camera", alpha, beta, altitude, cameraTarget, scene);
     camera.attachControl(canvas, false);
