@@ -47,6 +47,7 @@ dao.getSpaceLocationFromDB = function getSpaceLocationFromDB (id, callback) {
 				long: spaceRow['longitude'],
 				altitude: spaceRow['altitude']
 			};
+			console.log("SPACE LOC FOUND");
 			console.log(spaceLocation);
 			return callback(spaceLocation);
 		});
