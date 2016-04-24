@@ -155,6 +155,10 @@ app.get('/location/:id', function (req, res) {
   });
 });
 
+app.get('/newlocation/', function (req, res) {
+  res.sendFile(path.join(__dirname+'/views/newlocation.html'));
+});
+
 var server = app.listen(config.port, function () {
   var host = server.address().address;
   var port = server.address().port;

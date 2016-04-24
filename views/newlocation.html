@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Space Location</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Custom styles for this template -->
+    <link href="views/css/style.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="views/css/base.css" /> -->
+    <link rel="icon" type="image/png" href="views/images/logo.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="site-wrapper">  
+      <section class="part-top table">
+          <div class="table-cell">
+            <img class="img-responsive center-block" id="logo" src="views/images/logo.svg" alt="logo"/>
+          </div>
+      </section>
+      <section class="part-middle table">
+        <div class="container">
+          <div class="title">
+            <h4>Enter here your coordinates in your coordinate system and we will generate you a link !</h4>
+          </div>
+          <br>
+          <div>  
+            <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="control-label col-xs-3" for="inputLongitude">Longitude</label>
+                  <div class="col-xs-6 input-group">
+                    <input type="text" class="form-control" placeholder="your longitude" aria-describedby="basic-addon1">
+                    <span class="input-group-addon">° (-180° to 180°)</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label col-xs-3" for="inputLatitude">Latitude</label>
+                  <div class="col-xs-6 input-group">
+                    <input type="text" class="form-control" placeholder="your latitude" aria-describedby="basic-addon1">
+                    <span class="input-group-addon">° (-90° to 90°)</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label col-xs-3" for="inputAltitude">Altitude</label>
+                  <div class="col-xs-6 input-group">
+                    <input type="text" class="form-control" placeholder="your altitude" aria-describedby="basic-addon1">
+                    <span class="input-group-addon">km</span>
+                  </div>
+              </div>
+              <br>
+              <div class="form-group">
+                  <div class="col-xs-offset-3 col-xs-6">
+                      <input type="submit" class="btn btn-primary" value="Generate a link">
+                      <!-- <input type="reset" class="btn btn-default" value="Reset"> -->
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section class="part-bottom table">
+      </section>
+    </div>
+  </body>
+
+</html>
