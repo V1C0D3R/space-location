@@ -27,7 +27,7 @@
     <script src="../views/js/3dmodel.js"></script>
     <script>
       window.addEventListener('DOMContentLoaded', function() {
-        
+          
           canvas = document.getElementById('renderCanvas');
           engine = new BABYLON.Engine(canvas, true);
           var scene = createSpaceScene();
@@ -52,7 +52,7 @@
       </section>
       <section class="part-middle table">
         <div class="container">
-          <p>Some information about location</p>
+          <p id="planetInformation"></p>
         </div>
       </section>
       <section class="part-bottom table">
