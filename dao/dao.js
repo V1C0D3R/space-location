@@ -129,4 +129,63 @@ dao.getPlanetLocation = function getPlanetLocation(date, callback) {
 	});
 };
 
+dao.insertNewLocation = function insertNewLocation(newLocation, callback) {
+	// newLocationExample {"coordinateSystem":"ecliptic","planet":"earth","longitude":"88","latitude":"88","altitude":"88"}
+
+	// if (isNaN(newLocation.coordinateSystem) || isNaN(newLocation.planet) || isNaN(parseFloat(newLocation.longitude)) || isNaN(parseFloat(newLocation.latitude)) || isNaN(parseFloat(newLocation.altitude))) {
+	// 	console.log("Missing a parameter, should be like : {\"coordinateSystem\":\"ecliptic\",\"planet\":\"earth\",\"longitude\":\"88\",\"latitude\":\"88\",\"altitude\":\"88\"}");
+	// 	return callback(null);
+	// }
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			if (connection) {
+				connection.release();
+			}
+			console.log("Error setting new location: " + err);
+			return callback(null);
+		}
+		
+		var locationDate = dateFormat(new Date().getTime(), "yyyy-mm-dd hh:MM:ss");
+		newLocation.date = locationDate;
+		console.log("Location date : " + locationDate);
+
+		if (newLocation.planet == "earth") {
+			connection.query("INSERT INTO EarthPosition (latitude, longitude, altitude) VALUES (" + newLocation.latitude + ", " + newLocation.longitude + ", " + newLocation.altitude + ");", function(err, rows) {
+				//HANDLE ERRORS
+			});
+			connection.query("SELECT MAX(id) FROM EarthPosition;", function(err, rows) {
+				row = rows[0];
+				id = row['MAX(id)'];
+				connection.query("INSERT INTO SpaceLocation (moment, idEarthPosition) VALUES ('" + locationDate + "', " + id + ");", function(err, nullRows) {
+					connection.query("SELECT MAX(id) FROM SpaceLocation;", function(err, maxRows) {
+						maxRow = maxRows[0];
+						maxId = maxRow['MAX(id)'];
+						console.log(maxId);
+						return callback(maxId);
+					});
+				});
+			});
+			
+		}	else if (newLocation.planet == "mars")	{
+			connection.query("INSERT INTO MarsPosition (latitude, longitude, altitude) VALUES (" + newLocation.latitude + ", " + newLocation.longitude + ", " + newLocation.altitude + ");", function(err, rows) {
+				//HANDLE ERRORS
+			});
+			connection.query("SELECT MAX(id) FROM MarsPosition;", function(err, rows) {
+				row = rows[0];
+				id = row['MAX(id)'];
+				connection.query("INSERT INTO SpaceLocation (moment, idMarsPosition) VALUES ('" + locationDate + "', " + id + ");", function(err, nullRows) {
+					connection.query("SELECT MAX(id) FROM SpaceLocation;", function(err, maxRows) {
+						maxRow = maxRows[0];
+						maxId = maxRow['MAX(id)'];
+						console.log(maxId);
+						return callback(maxId);
+					});
+				});
+			});
+		}
+
+		return null;
+	});
+};
+
 module.exports = dao;
