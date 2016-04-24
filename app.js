@@ -38,6 +38,9 @@ var cameraJS = function(x, y, z) {
     jsScript += "var altitude = 1000;";
     jsScript += "var cameraTarget = new BABYLON.Vector3(" + x + ", " + y + ", " + z + ");";
     jsScript += "camera = new BABYLON.ArcRotateCamera(\"Camera\", alpha, beta, altitude, cameraTarget, scene);";
+    jsScript += "camera.minX = -1000000;";
+    jsScript += "camera.minY = -1000000;";
+    jsScript += "camera.minZ = -1000000;";
     jsScript += "camera.maxX = 1000000;";
     jsScript += "camera.maxY = 1000000;";
     jsScript += "camera.maxZ = 1000000;";
