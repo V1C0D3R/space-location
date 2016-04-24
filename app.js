@@ -83,19 +83,27 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     jsScript += "var planetMaterial = new BABYLON.StandardMaterial('" + planet + "Material', scene);";
     if (planetsJson[planet].texturePath) {
       jsScript += "planetMaterial.diffuseTexture = new BABYLON.Texture('" + planetsJson[planet].texturePath + "', scene);";
-      jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);";
-      jsScript += "planetMaterial.emissiveColor = BABYLON.Color3.White();";
-      jsScript += "planet" + planet + ".material = planetMaterial;";
     }
+    if (planetsJson[planet].colorR) {
+      var r = planetsJson[planet].colorR;
+      var g = planetsJson[planet].colorG;
+      var b = planetsJson[planet].colorB;
+      jsScript += "planetMaterial.diffuseColor = new BABYLON.Color3(" + r + ", " + g + ", " + b + ");";
+      jsScript += "planetMaterial.emissiveColor = new BABYLON.Color3(" + r + ", " + g + ", " + b + ");";
+      jsScript += "planetMaterial.ambientColor = new BABYLON.Color3(" + r + ", " + g + ", " + b + ");";
+    }
+    jsScript += "planet" + planet + ".material = planetMaterial;";
   };
   
   if (spaceLocation) {
-    var earthLat = planets['earth'].latitude; // de -90 à 90
-    var earthLong = planets['earth'].longitude - 180; // de 0 à 360 -> -180 à 180
-    var earthDistance = planets['earth'].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
-    var earthXPos = (planetDistance * Math.cos(planetLong) * Math.cos(planetLat));
-    var earthYPos = planetDistance * Math.sin(planetLong) * Math.cos(planetLat);
-    var earthZPos = planetDistance * Math.sin(planetLat);
+    var refPlanet = spaceLocation.ref;
+    console.log("Ref planet: " + refPlanet);
+    var earthLat = planets[refPlanet].latitude; // de -90 à 90
+    var earthLong = planets[refPlanet].longitude - 180; // de 0 à 360 -> -180 à 180
+    var earthDistance = planets[refPlanet].distanceToSun * 1495.978707; //* 149597.8707; // (UA = 149597870700 mètres) / 1000 / 1000
+    var earthXPos = (earthDistance * Math.cos(earthLong) * Math.cos(earthLat));
+    var earthYPos = earthDistance * Math.sin(earthLong) * Math.cos(earthLat);
+    var earthZPos = earthDistance * Math.sin(earthLat);
     
     console.log(spaceLocation);
     var pinsLat = spaceLocation.lat;
@@ -114,11 +122,11 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     console.log(pinsYPos);
     console.log(pinsZPos);
     
-    jsScript += "var pins = BABYLON.Mesh.CreateSphere('pins', 16, 15, scene);";
+    jsScript += "var pins = BABYLON.Mesh.CreateSphere('pins', 16, 5, scene);";
     jsScript += "pins.position = new BABYLON.Vector3(" + pinsXPos + ", " + pinsYPos + ", " + pinsZPos + ");";
     jsScript += "var pinsMaterial = new BABYLON.StandardMaterial('pinsMaterial', scene);";
-    jsScript += "pinsMaterial.diffuseTexture = new BABYLON.Texture('../views/images/red.png', scene);";
-    jsScript += "pinsMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);";
+    jsScript += "pinsMaterial.diffuseTexture = new BABYLON.Texture('../views/images/yellow.gif', scene);";
+    jsScript += "pinsMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0);";
     jsScript += "pinsMaterial.emissiveColor = BABYLON.Color3.White();";
     jsScript += "pins.material = pinsMaterial;";
     
@@ -138,6 +146,7 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
   }
 
   jsScript += "};</script>";
+  //console.log(jsScript);
   
   var html = fs.readFileSync(__dirname + '/views/index.html');
   var $ = cheerio.load(html);

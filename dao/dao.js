@@ -30,16 +30,55 @@ dao.getSpaceLocationFromDB = function getSpaceLocationFromDB (id, callback) {
 		
 		console.log('Connected as id: ' + connection.threadId);
 		// Careful with injection!
-		connection.query("SELECT * FROM SpaceLocation sl, EarthPosition ep WHERE sl.id="+id + " AND sl.idEarthPosition=ep.id;", function(err, rows) {
-			connection.release();
+		connection.query("SELECT * FROM SpaceLocation WHERE id=" + id + ";", function(err, rows) {
+			
 			if (err) {
 				console.log("Error after select query: " + err);
-		return callback(null);
+				return callback(null);
 			};
 			if (rows.length == 0) {
 				console.log("No row with id " + id + " found.");
-		return callback(null);
+				return callback(null);
 			}
+			
+			spaceRow = rows[0];
+			console.log(spaceRow);
+			var idPos = -1;
+			var referentiel = "";
+			var tableName = "";
+			if (spaceRow['idEarthPosition'] != null) {
+				console.log("associated with earth");
+				idPos = spaceRow['idEarthPosition'];
+				referentiel = "earth";
+				tableName = "EarthPosition";
+			} else if (spaceRow['idMarsPosition'] != null) {
+				console.log("associated with mars");
+				idPos = spaceRow['idMarsPosition'];
+				referentiel = "mars";
+				tableName = "MarsPosition";
+			} else {
+				console.log("NO POSITION ASSOCIATED");
+				return callback(null);
+			}
+			
+			connection.query("SELECT * FROM SpaceLocation sl, " + tableName + " pos WHERE sl.id=" + id + " AND " + idPos + "=pos.id;", function(err, rows) {
+				
+				spaceRow = rows[0];
+				console.log(spaceRow);
+				spaceLocation = {
+					date: spaceRow['moment'],
+					lat: spaceRow['latitude'],
+					long: spaceRow['longitude'],
+					altitude: spaceRow['altitude'],
+					ref: referentiel
+				};
+				console.log(spaceLocation);
+				return callback(spaceLocation);
+			});
+		});
+		
+		/*connection.query("SELECT * FROM SpaceLocation sl, EarthPosition ep WHERE sl.id="+id + " AND sl.idEarthPosition=ep.id;", function(err, rows) {
+				
 			spaceRow = rows[0];
 			spaceLocation = {
 				date: spaceRow['moment'],
@@ -50,7 +89,7 @@ dao.getSpaceLocationFromDB = function getSpaceLocationFromDB (id, callback) {
 			console.log("SPACE LOC FOUND");
 			console.log(spaceLocation);
 			return callback(spaceLocation);
-		});
+		});*/
 	});
 };
 
