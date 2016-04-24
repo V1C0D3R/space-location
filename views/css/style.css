@@ -41,7 +41,12 @@ body {
 }
 
 #logo{
-	max-height : 350px;
+	max-height : 100px;
+}
+
+#renderCanvas{
+  height: 100%;
+  width: 100%;
 }
 
 .table{
@@ -62,8 +67,8 @@ body {
 }
 
 .part-middle{
-	height : 15%;
-    width : 100%;
+	height : 20%;
+  width : 100%;
 }
 
 .slogan{
@@ -73,34 +78,6 @@ body {
 
 .part-bottom{
 	/*font-size: 1.2em;*/
-	height: 50%;
-}
-
-#slider {
-  margin: 0 auto;
-  background-color:#000;
-  width: 40%;
-}
-
-/* volume bar */
- .volume {
-    position:relative;
-    cursor:pointer;
-    width:100%;
-    height:20px;
-    float:left;
-    margin-top:10px;
-    margin-right:10px;
-    background-color:#fff;
-    border-color: black;
-}
-.volumeBar {
-    display:block;
-    height:20px;
-    position:absolute;
-    top:0;
-    left:0;
-    background-color:#2980b9;
-    z-index:10;
-    width: 90%;
+	height: 55%;
+  width : 100%;
 }

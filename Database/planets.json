@@ -1,0 +1,63 @@
+{
+  "mercury": {
+    "name": "Mercury",
+    "diameter": 4900,
+    "texturePath": null,
+    "colorR": null,
+    "colorG": null,
+    "colorB": null
+  },
+  "venus": {
+    "name": "Venus",
+    "diameter": 12103.6,
+    "texturePath": null
+  },
+  "earth": {
+    "name": "Earth",
+    "diameter": 12713.6,
+    "texturePath": "../views/images/earth.jpg",
+    "colorR": 0.6,
+    "colorG": 0.6,
+    "colorB": 0.6
+  },
+  "mars": {
+    "name": "Mars",
+    "diameter": 6779,
+    "texturePath": null,
+    "colorR": 0.6,
+    "colorG": 0.1,
+    "colorB": 0.1
+  },
+  "jupiter": {
+    "name": "Jupiter",
+    "diameter": 139822,
+    "texturePath": null,
+    "colorR": null,
+    "colorG": null,
+    "colorB": null
+  },
+  "saturn": {
+    "name": "Saturn",
+    "diameter": 116464,
+    "texturePath": null,
+    "colorR": null,
+    "colorG": null,
+    "colorB": null
+  },
+  "uranus": {
+    "name": "Uranus",
+    "diameter": 50724,
+    "texturePath": null,
+    "colorR": null,
+    "colorG": null,
+    "colorB": null
+  },
+  "neptune": {
+    "name": "Neptune",
+    "diameter": 49244,
+    "texturePath": null,
+    "colorR": null,
+    "colorG": null,
+    "colorB": null
+  }
+}
