@@ -183,6 +183,10 @@ var createAndSendAddPlanetScript = function(response, planets, spaceLocation) {
     var earthZPos = earthDistance * Math.sin(earthLat);
     
     jsScript += cameraJS(earthXPos, earthYPos, earthZPos);
+    var locationUrl = "https://spacelocation.herokuapp.com/newlocation/";
+    var planetInfoHtml = "<a class=\"btn btn-danger\" href=" + locationUrl + ">Find your location !</a>";
+    var pNode = $('#planetInformation');
+    pNode.replaceWith(planetInfoHtml);
   }
 
   jsScript += "};</script>";
