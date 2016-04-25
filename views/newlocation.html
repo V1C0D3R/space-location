@@ -35,10 +35,8 @@
               return o;
           };          
 
-
           $("#coordinateForm").bind("submit", function(evt) {
               var coordinateForm = $("#coordinateForm").serializeObject();
-              console.log(coordinateForm);
 
               $.ajax({
                   url: "./api/addnewlocation",
@@ -48,18 +46,36 @@
                   dataType: "json",
                   success: function (data, textStatus, jqXHR) {
                       // do something with your data here.
-                      console.log("SUCCESS");
-                      console.log(data);
                       document.getElementById("generatedLink").innerHTML = "Link : <a href=" + data.url + ">" + data.url + "</a>";
                   },
                   error: function (jqXHR, textStatus, errorThrown) {
                       // likewise do something with your error here.
-                      console.log("ERROR");
+                      console.error("ERROR : Impossible to generate link");
                   }
               });
-
+              //Do not refresh the page with 'return false'
               return false;
           });
+
+          //--------GEOLOCATION -------
+          function success_handler(position) {
+            document.getElementsByName("latitude")[0].value = position.coords.latitude;
+            document.getElementsByName("longitude")[0].value = position.coords.longitude;
+            document.getElementsByName("altitude")[0].value = position.coords.altitude;
+            document.getElementById("geolocationMsg").className = 'alert alert-success';
+            document.getElementById("geolocationMsg").innerHTML = "Fields coordinates automatically filled with your location";
+          }
+
+          function error_handler(error) {
+            geolocationMsg
+            document.getElementById("geolocationMsg").innerHTML = "Not able to locate you automatically";
+            document.getElementById("geolocationMsg").className = 'alert alert-warning';
+          }
+
+          if(navigator.geolocation) {
+            // Geolocation supported.
+            navigator.geolocation.getCurrentPosition(success_handler, error_handler);
+          }
 
       });
     </script>
@@ -68,16 +84,15 @@
   <body>
     <div class="site-wrapper">  
       <section class="part-top table">
-          <div class="table-cell">
             <img class="img-responsive center-block" id="logo" src="../views/images/logo.svg" alt="logo"/>
-          </div>
+            <span class="label label-warning">beta</span>
       </section>
       <section class="part-middle table">
         <div class="container">
           <div class="title">
             <h4>Enter here your coordinates in your coordinate system and we will generate you a link !</h4>
+            <p class="alert alert-info" id="geolocationMsg" role="alert" style="display: inline-block;">Trying to geolocate you...</p>
           </div>
-          <br>
           <div>  
             <form class="form-horizontal" id="coordinateForm">
               <div class="form-group">
@@ -89,7 +104,7 @@
                   </div>
                   <div class="col-xs-2">
                       <label class="radio-inline">
-                          <input type="radio" name="coordinateSystem" value="galactic" > Galactic
+                          <input type="radio" disabled="disabled" name="coordinateSystem" value="galactic" > Galactic
                       </label>
                   </div>
               </div>

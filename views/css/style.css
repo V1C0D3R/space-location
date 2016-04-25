@@ -41,7 +41,8 @@ body {
 }
 
 #logo{
-	max-height : 100px;
+  height: 90%;
+	max-height : 300px;
 }
 
 #renderCanvas{
@@ -63,11 +64,11 @@ body {
 }
 
 .part-top{
-	height : 20%;
+	height : 10%;
 }
 
 .part-middle{
-	height : 20%;
+	height : 10%;
   width : 100%;
 }
 
@@ -78,6 +79,6 @@ body {
 
 .part-bottom{
 	/*font-size: 1.2em;*/
-	height: 55%;
+	height: 75%;
   width : 100%;
 }

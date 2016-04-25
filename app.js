@@ -39,7 +39,6 @@ var submitNewLocation = function (location, callback) {
     if (!id) {
       return callback(new Error('Failed to submit new location'), null);
     }
-    console.log("Call callback");
     return callback(null, id);
   });
   
@@ -244,29 +243,18 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 app.post('/api/addnewlocation', function (req, res) {
-  // var coordinateSystem = req.data.coordinateSystem;
-  // var planet = req.data.planet;
-  // var longitude = req.data.longitude;
-  // var latitude = req.data.latitude;
-  // var altitude = req.data.altitude;
-
-  console.log("Successfully received query !");
-  console.log(req.body);
-
   var newLocation = req.body;
   
   var index = null;
   var url = "https://spacelocation.herokuapp.com/location/";
   submitNewLocation(newLocation, function(error, id) {
     if (error) { 
-      console.log("Error submitting space location.");
+      console.error("Error submitting space location.");
       //TODO: return error to page : error
       error = "Error submitting space location.";
     } else {
-        console.log("index : " + id);
         index = id;
         url += id;
-        console.log("url : " + url);
 
         res.format({
           'text/plain': function(){
