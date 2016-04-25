@@ -39,7 +39,7 @@
               var coordinateForm = $("#coordinateForm").serializeObject();
 
               $.ajax({
-                  url: "./api/addnewlocation",
+                  url: "../api/addnewlocation",
                   type: "POST",
                   contentType: "application/json",
                   data: JSON.stringify(coordinateForm),
